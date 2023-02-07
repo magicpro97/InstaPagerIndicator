@@ -116,12 +116,21 @@ fun HorizontalPagerIndicator(
                     }
                 }
 
-                val dotCount = if (after > 0) before + 3 + 2 - after else before + 3
+//                val dotCount = if (after > 0) before + 3 + 2 - after else before + 3
+                val dotCount = before + 3 + after
                 repeat(3) {
-                    if (dotCount == selectedIndex) {
-                        Box(selectedIndicatorModifier)
+                    if (dotCount < 6 && selectedIndex < 3) {
+                        if (it == selectedIndex) {
+                            Box(selectedIndicatorModifier)
+                        } else {
+                            Box(bigIndicatorModifier)
+                        }
                     } else {
-                        Box(bigIndicatorModifier)
+                        if (it == 2) {
+                            Box(selectedIndicatorModifier)
+                        } else {
+                            Box(bigIndicatorModifier)
+                        }
                     }
                 }
                 when (after) {
