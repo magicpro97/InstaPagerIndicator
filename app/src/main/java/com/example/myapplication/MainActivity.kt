@@ -6,27 +6,21 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import java.lang.Integer.max
 import java.lang.Integer.min
-import kotlin.math.absoluteValue
-import kotlin.math.sign
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPagerApi::class)
@@ -56,7 +50,6 @@ fun HorizontalPagerIndicator(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     pageCount: Int = pagerState.pageCount,
-    pageIndexMapping: (Int) -> Int = { it },
     activeColor: Color = Color.Blue,
     inactiveColor: Color = Color.Gray,
     indicatorWidth: Dp = 8.dp,
@@ -64,9 +57,6 @@ fun HorizontalPagerIndicator(
     spacing: Dp = indicatorWidth,
     indicatorShape: Shape = CircleShape,
 ) {
-
-    val indicatorWidthPx = LocalDensity.current.run { indicatorWidth.roundToPx() }
-    val spacingPx = LocalDensity.current.run { spacing.roundToPx() }
     val selectedIndex = pagerState.currentPage - 1
     var before = 0
     var after = 0
@@ -116,7 +106,6 @@ fun HorizontalPagerIndicator(
                     }
                 }
 
-//                val dotCount = if (after > 0) before + 3 + 2 - after else before + 3
                 val dotCount = before + 3 + after
                 repeat(3) {
                     if (dotCount < 6 && selectedIndex < 3) {
@@ -142,33 +131,6 @@ fun HorizontalPagerIndicator(
                 }
             }
         }
-//        Box(
-//            Modifier
-//                .offset {
-//                    val position = pageIndexMapping(pagerState.currentPage)
-//                    val offset = pagerState.currentPageOffset
-//                    val next =
-//                        pageIndexMapping(pagerState.currentPage + offset.sign.toInt())
-//                    val scrollPosition =
-//                        ((next - position) * offset.absoluteValue + position).coerceIn(
-//                            0f,
-//                            (pageCount - 1)
-//                                .coerceAtLeast(0)
-//                                .toFloat()
-//                        )
-//                    IntOffset(
-//                        x = ((spacingPx + indicatorWidthPx) * scrollPosition).toInt(),
-//                        y = 0
-//                    )
-//                }
-//                .size(width = indicatorWidth, height = indicatorHeight)
-//                .then(
-//                    if (pageCount > 0) Modifier.background(
-//                        color = activeColor,
-//                        shape = indicatorShape,
-//                    ) else Modifier
-//                )
-//        )
     }
 }
 
@@ -258,7 +220,7 @@ fun PreviewIndicator9() {
 @Composable
 fun PreviewIndicator10() {
     HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 10),
-        pageCount = 10
+        pagerState = PagerState(currentPage = 3),
+        pageCount = 6
     )
 }
