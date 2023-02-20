@@ -3,224 +3,45 @@ package com.example.myapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.ui.CCLineChart
+import com.example.myapplication.ui.Point
 import com.example.myapplication.ui.theme.MyApplicationTheme
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import java.lang.Integer.max
-import java.lang.Integer.min
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalPagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HorizontalPagerIndicator(
-                        pagerState = PagerState(currentPage = 5),
-                        pageCount = 10
+                    CCLineChart(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp),
+                        data = listOf(
+                            Point(10f, 7f, image = "https://picsum.photos/100/100"),
+                            Point(20f, 10f),
+                            Point(30f, 20f),
+                            Point(40f, 14f, image = "https://picsum.photos/100/100"),
+                            Point(50f, 24f),
+                            Point(60f, 17f),
+                            Point(70f, 10f, image = "https://picsum.photos/100/100"),
+                            Point(80f, 13f),
+                            Point(90f, 7f, image = "https://picsum.photos/100/100"),
+                            Point(100f, 3f),
+                        ),
+                        itemCountX = 4,
+                        itemCountY = 5,
                     )
                 }
             }
         }
     }
-}
-
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun HorizontalPagerIndicator(
-    pagerState: PagerState,
-    modifier: Modifier = Modifier,
-    pageCount: Int = pagerState.pageCount,
-    activeColor: Color = Color.Blue,
-    inactiveColor: Color = Color.Gray,
-    indicatorWidth: Dp = 8.dp,
-    indicatorHeight: Dp = indicatorWidth,
-    spacing: Dp = indicatorWidth,
-    indicatorShape: Shape = CircleShape,
-) {
-    val selectedIndex = pagerState.currentPage - 1
-    var before = 0
-    var after = 0
-    var totalVisible = 1
-    Box(
-        modifier =
-        modifier, contentAlignment = Alignment.CenterStart
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(spacing),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            val smallIndicatorModifier =
-                Modifier
-                    .size(width = indicatorWidth / 3, height = indicatorHeight / 3)
-                    .background(color = inactiveColor, shape = indicatorShape)
-            val mediumIndicatorModifier =
-                Modifier
-                    .size(width = indicatorWidth / 2, height = indicatorHeight / 2)
-                    .background(color = inactiveColor, shape = indicatorShape)
-            val bigIndicatorModifier =
-                Modifier
-                    .size(width = indicatorWidth, height = indicatorHeight)
-                    .background(color = inactiveColor, shape = indicatorShape)
-            val selectedIndicatorModifier =
-                Modifier
-                    .size(width = indicatorWidth, height = indicatorHeight)
-                    .background(color = activeColor, shape = indicatorShape)
-
-
-            if (pageCount < 4) {
-                repeat(pageCount) {
-                    if (it == selectedIndex) {
-                        Box(selectedIndicatorModifier)
-                    } else {
-                        Box(bigIndicatorModifier)
-                    }
-                }
-            } else {
-                before = min(max(selectedIndex - 2, 0), 2)
-                after = max(min(pageCount - selectedIndex - 1, 2), 0)
-                when (before) {
-                    1 -> Box(mediumIndicatorModifier)
-                    2 -> {
-                        Box(smallIndicatorModifier)
-                        Box(mediumIndicatorModifier)
-                    }
-                }
-
-                val dotCount = before + 3 + after
-                repeat(3) {
-                    if (dotCount < 6 && selectedIndex < 3) {
-                        if (it == selectedIndex) {
-                            Box(selectedIndicatorModifier)
-                        } else {
-                            Box(bigIndicatorModifier)
-                        }
-                    } else {
-                        if (it == 2) {
-                            Box(selectedIndicatorModifier)
-                        } else {
-                            Box(bigIndicatorModifier)
-                        }
-                    }
-                }
-                when (after) {
-                    1 -> Box(mediumIndicatorModifier)
-                    2 -> {
-                        Box(mediumIndicatorModifier)
-                        Box(smallIndicatorModifier)
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator2() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 2),
-        pageCount = 7
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator3() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 3),
-        pageCount = 7
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator4() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 4),
-        pageCount = 7
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator5() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 5),
-        pageCount = 7
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator6() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 6),
-        pageCount = 7
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator7() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 7),
-        pageCount = 7
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator8() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 8),
-        pageCount = 8
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator9() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 9),
-        pageCount = 9
-    )
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Preview
-@Composable
-fun PreviewIndicator10() {
-    HorizontalPagerIndicator(
-        pagerState = PagerState(currentPage = 3),
-        pageCount = 6
-    )
 }
